@@ -29,7 +29,32 @@ namespace WpfProject
 
             DataContext = new ApplicationViewModel(customListView);
 
+            
+        }
 
+        private void addBtn_Click(object sender, RoutedEventArgs e)
+        {
+            AddWindow addWindow = new AddWindow(0);
+            addWindow.DataContext = DataContext;
+           
+            addWindow.ShowDialog();
+            
+
+            
+        }
+
+        private void editBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (customListView.SelectedItem == null)
+            {
+                MessageBox.Show($"Произошла ошибка. Выберите товар из списка!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            AddWindow addWindow = new AddWindow(1, customListView.SelectedItem as Product);
+            addWindow.DataContext = DataContext;
+
+            addWindow.ShowDialog();
         }
     }
 }

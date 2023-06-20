@@ -34,11 +34,46 @@ namespace WpfProject
                 return addCommand ??
                     (addCommand = new RelayCommand(obj =>
                     {
-                        Product product = new Product { Id = counter, Name = "Товар", Price = 0 };
-                        Products.Add(product);
-                        SelectedProduct = product;
-                        customListView.RefreshCustomListView();
+                        var values = obj as Object[];
+
+                        if (values != null)
+                        {
+                            var name = (string)values[0];
+                            var price = Convert.ToDouble(values[1]);
+
+                            Product product = new Product { Id = counter, Name = name, Price = price };
+                            Products.Add(product);
+                            SelectedProduct = product;
+                            customListView.RefreshCustomListView();
+                        }
+
                     }));
+            }
+        }
+
+        private RelayCommand editCommand;
+        public RelayCommand EditCommand
+        {
+            get
+            {
+                return editCommand ??
+                    (editCommand = new RelayCommand(obj =>
+                    {
+                        var values = obj as Object[];
+
+                        if (values != null)
+                        {
+                            var name = (string)values[0];
+                            var price = Convert.ToDouble(values[1]);
+
+                            SelectedProduct.Name = name;
+                            SelectedProduct.Price = price;
+
+                            customListView.RefreshCustomListView();
+                        }
+
+                    },
+                    (obj) => Products.Count > 0));
             }
         }
 

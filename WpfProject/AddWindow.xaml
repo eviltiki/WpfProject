@@ -1,0 +1,53 @@
+﻿<Window x:Class="WpfProject.AddWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfProject"
+        mc:Ignorable="d"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        WindowStartupLocation="CenterScreen"
+        Title="Добавление товара" Height="194" Width="370">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary>
+                    <local:CommandParamConverter x:Key="cv" />
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" Padding="20">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Margin="0 0 10 0" FontWeight="Bold">Название</TextBlock>
+                <TextBox x:Name="nameInput" Width="255"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="1" Padding="20">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Margin="0 0 35 0" FontWeight="Bold">Цена</TextBlock>
+                <TextBox x:Name="priceInput" Width="255"/>
+            </StackPanel>
+        </Border>
+        <Border Padding="5" Grid.Row="2" BorderThickness="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <WrapPanel>
+                <Button x:Name="addBtn" Width="80" FontSize="12" IsDefault="True" Margin="0 0 5 0" Padding="5">
+                    <Button.CommandParameter>
+                        <MultiBinding Converter="{StaticResource cv}">
+                            <Binding ElementName="nameInput" Path="Text" UpdateSourceTrigger="PropertyChanged"/>
+                            <Binding ElementName="priceInput" Path="Text" UpdateSourceTrigger="PropertyChanged"/>
+                        </MultiBinding>
+                    </Button.CommandParameter>
+                    Добавить
+                </Button>
+                <Button x:Name="cancelBtn" Width="80" FontSize="12" IsCancel="True">Отмена</Button>
+            </WrapPanel>
+        </Border>
+    </Grid>
+</Window>

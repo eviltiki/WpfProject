@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:WpfProject"
         xmlns:col="clr-namespace:System.Collections;assembly=mscorlib"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
         Title="Главная" Height="402" Width="750">
     <Window.Resources>
         <ResourceDictionary>
@@ -24,8 +25,8 @@
         </Grid.RowDefinitions>
         <Border Padding="10" BorderThickness="0" Grid.ColumnSpan="2">
             <WrapPanel x:Name="navigationBlock" Style="{DynamicResource NavigationBlock}">
-                <Button x:Name="addBtn" Content="Добавить" Command="{Binding AddCommand}"/>
-                <Button x:Name="editBtn" Content="Изменить"/>
+                <Button x:Name="addBtn" Content="Добавить" Click="addBtn_Click"/>
+                <Button x:Name="editBtn" Content="Изменить" Click="editBtn_Click"/>
                 <Button x:Name="delBtn" Content="Удалить" Command="{Binding RemoveCommand}"
                     CommandParameter="{Binding SelectedProduct}"/>
             </WrapPanel>
