@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,9 +21,15 @@ namespace WpfProject
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static int counter = 0;
+
         public MainWindow()
         {
             InitializeComponent();
+
+            DataContext = new ApplicationViewModel(customListView);
+
+
         }
     }
 }

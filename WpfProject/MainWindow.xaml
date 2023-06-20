@@ -4,12 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfProject"
+        xmlns:col="clr-namespace:System.Collections;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="MainWindow" Height="402" Width="750">
+        Title="Главная" Height="402" Width="750">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="MainStyles.xaml"/>
+                <ResourceDictionary>
+                    <local:IndexConverter x:Key="IndexConverter" />
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -18,17 +22,25 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <Border Padding="10" BorderThickness="0">
+        <Border Padding="10" BorderThickness="0" Grid.ColumnSpan="2">
             <WrapPanel x:Name="navigationBlock" Style="{DynamicResource NavigationBlock}">
-                <Button x:Name="addBtn" Content="Добавить"/>
+                <Button x:Name="addBtn" Content="Добавить" Command="{Binding AddCommand}"/>
                 <Button x:Name="editBtn" Content="Изменить"/>
-                <Button x:Name="delBtn" Content="Удалить"/>
+                <Button x:Name="delBtn" Content="Удалить" Command="{Binding RemoveCommand}"
+                    CommandParameter="{Binding SelectedProduct}"/>
             </WrapPanel>
         </Border>
-        <local:CustomListBox x:Name="customListBox" Style="{DynamicResource CustomListBox}">
-            <ListBoxItem>1</ListBoxItem>
-            <ListBoxItem>2</ListBoxItem>
-            <ListBoxItem>3</ListBoxItem>
-        </local:CustomListBox>
+        <local:CustomListView x:Name="customListView" Style="{DynamicResource CustomListView}" ItemsSource="{Binding Products}" 
+                              SelectedItem="{Binding SelectedProduct}" AlternativeBackground="LightGray" Grid.ColumnSpan="2" Margin="0,0,0,128" Grid.Row="1">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding RelativeSource={RelativeSource FindAncestor, 
+                        AncestorType={x:Type ListViewItem}}, 
+                        Converter={StaticResource IndexConverter}}" Width="20"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Name}">Название</GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Price}">Цена</GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </local:CustomListView>
     </Grid>
 </Window>
