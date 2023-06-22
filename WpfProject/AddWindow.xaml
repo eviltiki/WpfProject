@@ -7,13 +7,14 @@
         mc:Ignorable="d"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         WindowStartupLocation="CenterScreen"
-        Title="Добавление товара" Height="194" Width="370">
+        Title="Добавление товара" Height="306" Width="376">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
-                    <local:CommandParamConverter x:Key="cv" />
+                    <local:CommandParamConverter x:Key="cv"/>
                 </ResourceDictionary>
+                <ResourceDictionary Source="Styles/AddWindowStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -21,23 +22,30 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Border Grid.Row="0" Padding="20">
+        <Border Grid.Row="0" Padding="20" BorderThickness="0">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Margin="0 0 10 0" FontWeight="Bold">Название</TextBlock>
-                <TextBox x:Name="nameInput" Width="255"/>
+                <TextBox x:Name="nameInput" MinWidth="250"/>
             </StackPanel>
         </Border>
         <Border Grid.Row="1" Padding="20">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Margin="0 0 35 0" FontWeight="Bold">Цена</TextBlock>
-                <TextBox x:Name="priceInput" Width="255"/>
+                <TextBox x:Name="priceInput" MinWidth="250"/>
             </StackPanel>
         </Border>
-        <Border Padding="5" Grid.Row="2" BorderThickness="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <WrapPanel>
-                <Button x:Name="addBtn" Width="80" FontSize="12" IsDefault="True" Margin="0 0 5 0" Padding="5">
+        <Border Grid.Row="2" Padding="20">
+            <StackPanel HorizontalAlignment="Left">
+                <TextBlock FontWeight="Bold" Margin="0 0 0 5">Дата старта продаж</TextBlock>
+                <DatePicker DisplayDateEnd="{x:Static sys:DateTime.Now}"/>
+            </StackPanel>
+        </Border>
+        <Border Padding="20 5 20 5" Grid.Row="3" BorderThickness="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <WrapPanel x:Name="ButtonsPanel">
+                <Button Style="{DynamicResource MainStyleButtons}" x:Name="addBtn" IsDefault="True" Background="#2be097" Click="addBtnClick">
                     <Button.CommandParameter>
                         <MultiBinding Converter="{StaticResource cv}">
                             <Binding ElementName="nameInput" Path="Text" UpdateSourceTrigger="PropertyChanged"/>
@@ -46,7 +54,8 @@
                     </Button.CommandParameter>
                     Добавить
                 </Button>
-                <Button x:Name="cancelBtn" Width="80" FontSize="12" IsCancel="True">Отмена</Button>
+                <Button Style="{DynamicResource MainStyleButtons}" x:Name="clearBtn">Очистить</Button>
+                <Button Style="{DynamicResource MainStyleButtons}" x:Name="cancelBtn" Margin="0 0 0 5" IsCancel="True">Отмена</Button>
             </WrapPanel>
         </Border>
     </Grid>

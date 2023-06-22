@@ -14,11 +14,7 @@ namespace WpfProject
         private int id;
         private string name;
         private double price;
-
-        public Product()
-        {
-            ApplicationViewModel.counter += 1;
-        }
+        private string date;
 
         public int Id
         {
@@ -50,9 +46,19 @@ namespace WpfProject
             }
         }
 
+        public string Date
+        {
+            get { return date; }
+            set
+            {
+                date = value;
+                OnPropertyChanged("Date");
+            }
+        }
+
         public override string ToString()
         {
-            return $"Код = {id}, Название = {name}, Цена = {price}";
+            return $"Код = {id}, Название = {name}, Цена = {price}, Дата = {date}";
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

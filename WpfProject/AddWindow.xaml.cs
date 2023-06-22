@@ -51,5 +51,9 @@ namespace WpfProject
             }
         }
 
+        private void addBtnClick(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
