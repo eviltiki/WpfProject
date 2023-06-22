@@ -21,7 +21,6 @@ namespace WpfProject
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static int counter = 0;
 
         public MainWindow()
         {
@@ -29,18 +28,18 @@ namespace WpfProject
 
             DataContext = new ApplicationViewModel(customListView);
 
-            
+
         }
 
         private void addBtn_Click(object sender, RoutedEventArgs e)
         {
             AddWindow addWindow = new AddWindow(0);
             addWindow.DataContext = DataContext;
-           
-            addWindow.ShowDialog();
-            
 
-            
+            addWindow.ShowDialog();
+
+
+
         }
 
         private void editBtn_Click(object sender, RoutedEventArgs e)

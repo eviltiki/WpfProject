@@ -40,6 +40,7 @@
                         Converter={StaticResource IndexConverter}}" Width="20"/>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=Name}">Название</GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=Price}">Цена</GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Date}">Дата старта продажи</GridViewColumn>              
                 </GridView>
             </ListView.View>
         </local:CustomListView>

@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.Intrinsics.Arm;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using WpfProject;
@@ -16,10 +20,38 @@ namespace WpfProject
     public class ApplicationViewModel : INotifyPropertyChanged
     {
         public ObservableCollection<Product> Products { get; set; }
-        public static int counter = 0;
         private Product selectedProduct;
         private CustomListView customListView;
+        private string connectionString = @"Data Source=ARTHUR-PC\ARTHURSQL;
+                                                            Initial Catalog=ShopDB;Integrated Security=True";
 
+        public void LoadDataIntoList()
+        {
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Товар", connection);
+
+                connection.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                int id;
+                string productName;
+                double productPrice;
+                string date;
+
+                while (reader.Read())
+                {
+                    id = Convert.ToInt32(reader["Код"]);
+                    productName = Convert.ToString(reader["Название"]);
+                    productPrice = Convert.ToDouble(reader["Цена"]);
+                    date = Convert.ToString(reader["Дата"]).Substring(0, 10);
+
+                    Products.Add(new Product { Id = id, Name = productName, Price = productPrice, Date = date });
+                }
+            }
+        }
 
         public int GetIndextFromList(Product product)
         {
@@ -31,23 +63,23 @@ namespace WpfProject
         {
             get
             {
-                return addCommand ??
-                    (addCommand = new RelayCommand(obj =>
-                    {
-                        var values = obj as Object[];
+                return addCommand; /*??*/
+                //    (addCommand = new RelayCommand(obj =>
+                //    {
+                //        var values = obj as Object[];
 
-                        if (values != null)
-                        {
-                            var name = (string)values[0];
-                            var price = Convert.ToDouble(values[1]);
+                //        if (values != null)
+                //        {
+                //            var name = (string)values[0];
+                //            var price = Convert.ToDouble(values[1]);
 
-                            Product product = new Product { Id = counter, Name = name, Price = price };
-                            Products.Add(product);
-                            SelectedProduct = product;
-                            customListView.RefreshCustomListView();
-                        }
+                //            Product product = new Product { Id = counter, Name = name, Price = price };
+                //            Products.Add(product);
+                //            SelectedProduct = product;
+                //            customListView.RefreshCustomListView();
+                //        }
 
-                    }));
+                //    }));
             }
         }
 
@@ -56,24 +88,24 @@ namespace WpfProject
         {
             get
             {
-                return editCommand ??
-                    (editCommand = new RelayCommand(obj =>
-                    {
-                        var values = obj as Object[];
+                return editCommand; /*??*/
+                //    (editCommand = new RelayCommand(obj =>
+                //    {
+                //        var values = obj as Object[];
 
-                        if (values != null)
-                        {
-                            var name = (string)values[0];
-                            var price = Convert.ToDouble(values[1]);
+                //        if (values != null)
+                //        {
+                //            var name = (string)values[0];
+                //            var price = Convert.ToDouble(values[1]);
 
-                            SelectedProduct.Name = name;
-                            SelectedProduct.Price = price;
+                //            SelectedProduct.Name = name;
+                //            SelectedProduct.Price = price;
 
-                            customListView.RefreshCustomListView();
-                        }
+                //            customListView.RefreshCustomListView();
+                //        }
 
-                    },
-                    (obj) => Products.Count > 0));
+                //    },
+                //    (obj) => Products.Count > 0));
             }
         }
 
@@ -82,17 +114,17 @@ namespace WpfProject
         {
             get
             {
-                return removeCommand ??
-                  (removeCommand = new RelayCommand(obj =>
-                  {
-                      Product product = obj as Product;
-                      if (product != null)
-                      {
-                          Products.Remove(product);
-                          customListView.RefreshCustomListView();
-                      }
-                  },
-                 (obj) => Products.Count > 0));
+                return removeCommand; /*??*/
+                //  (removeCommand = new RelayCommand(obj =>
+                //  {
+                //      Product product = obj as Product;
+                //      if (product != null)
+                //      {
+                //          Products.Remove(product);
+                //          customListView.RefreshCustomListView();
+                //      }
+                //  },
+                // (obj) => Products.Count > 0));
             }
         }
 
@@ -108,14 +140,12 @@ namespace WpfProject
 
         public ApplicationViewModel(CustomListView customListView)
         {
-            Products = new ObservableCollection<Product>
-            {
-                new Product { Id = 1, Name = "Телефон", Price = 1700 },
-                new Product { Id = 2, Name = "Калькулятор", Price = 70},
-                new Product { Id = 3, Name = "Ноутбук", Price = 2850 },
-            };
+
+            Products = new ObservableCollection<Product>();
 
             this.customListView = customListView;
+
+            LoadDataIntoList();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -127,6 +157,10 @@ namespace WpfProject
 
         }
 
+        //public AddProductToDb()
+        //{ 
+
+        //}
 
     }
 }
