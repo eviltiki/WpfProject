@@ -19,9 +19,14 @@ namespace WpfProject
     /// </summary>
     public partial class AddWindow : Window
     {
-        public AddWindow(int WindowType = 0, Product product = null)
+
+        public AddWindow(MainWindow mainWindow, int WindowType = 0, Product product = null)
         {
             InitializeComponent();
+
+            this.Resources.Add("AppStartDate", mainWindow.AppStartDate);
+
+            dataPicker.DisplayDateStart = (DateTime)this.TryFindResource("AppStartDate");
 
             if (WindowType == 0)
             {
@@ -49,11 +54,6 @@ namespace WpfProject
                 addBtn.SetBinding(Button.CommandProperty, binding);
 
             }
-        }
-
-        private void addBtnClick(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

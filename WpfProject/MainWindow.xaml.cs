@@ -22,9 +22,13 @@ namespace WpfProject
     public partial class MainWindow : Window
     {
 
+        public DateTime AppStartDate { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
+
+            AppStartDate = DateTime.Now;
 
             DataContext = new ApplicationViewModel(customListView);
 
@@ -33,7 +37,7 @@ namespace WpfProject
 
         private void addBtn_Click(object sender, RoutedEventArgs e)
         {
-            AddWindow addWindow = new AddWindow(0);
+            AddWindow addWindow = new AddWindow(this, 0);
             addWindow.DataContext = DataContext;
 
             addWindow.ShowDialog();
@@ -50,7 +54,7 @@ namespace WpfProject
                 return;
             }
 
-            AddWindow addWindow = new AddWindow(1, customListView.SelectedItem as Product);
+            AddWindow addWindow = new AddWindow(this, 1, customListView.SelectedItem as Product);
             addWindow.DataContext = DataContext;
 
             addWindow.ShowDialog();
