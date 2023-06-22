@@ -15,6 +15,7 @@
                 <ResourceDictionary>
                     <local:IndexConverter x:Key="IndexConverter" />
                 </ResourceDictionary>
+                <ResourceDictionary Source="Styles/CustomListViewStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -31,18 +32,18 @@
                     CommandParameter="{Binding SelectedProduct}"/>
             </WrapPanel>
         </Border>
-        <local:CustomListView x:Name="customListView" Style="{DynamicResource CustomListView}" ItemsSource="{Binding Products}" 
+        <local:CustomListView x:Name="customListView" ItemsSource="{Binding Products}" 
                               SelectedItem="{Binding SelectedProduct}" AlternativeBackground="LightGray" Grid.ColumnSpan="2" Margin="0,0,0,128" Grid.Row="1">
-            <ListView.View>
-                <GridView>
+            <!--<ListView.View>
+                --><!--<GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding RelativeSource={RelativeSource FindAncestor, 
                         AncestorType={x:Type ListViewItem}}, 
                         Converter={StaticResource IndexConverter}}" Width="20"/>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=Name}">Название</GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=Price}">Цена</GridViewColumn>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=Date}">Дата старта продажи</GridViewColumn>              
-                </GridView>
-            </ListView.View>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Date}">Дата старта продажи</GridViewColumn>
+                </GridView>--><!--
+            </ListView.View>-->
         </local:CustomListView>
     </Grid>
 </Window>
