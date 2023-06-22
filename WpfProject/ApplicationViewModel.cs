@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.Intrinsics.Arm;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Xml.Linq;
 using WpfProject;
 
 namespace WpfProject
@@ -202,17 +204,40 @@ namespace WpfProject
         {
             get
             {
-                return removeCommand; /*??*/
-                //  (removeCommand = new RelayCommand(obj =>
-                //  {
-                //      Product product = obj as Product;
-                //      if (product != null)
-                //      {
-                //          Products.Remove(product);
-                //          customListView.RefreshCustomListView();
-                //      }
-                //  },
-                // (obj) => Products.Count > 0));
+                return removeCommand ??
+                (removeCommand = new RelayCommand(obj =>
+                {
+                    Product product = obj as Product;
+
+                    if (MessageBox.Show("Вы уверены, что хотите удалить выбранную запись?", "Подтверждение", MessageBoxButton.OKCancel, MessageBoxImage.Warning) == MessageBoxResult.OK && product != null)
+                    {
+                        using (SqlConnection connection = new SqlConnection(connectionString))
+                        {
+                            SqlCommand cmd = new SqlCommand($"EXEC prУдалениеТовара {product.Id}", connection);
+
+                            connection.Open();
+                            try
+                            {
+                                int flag = cmd.ExecuteNonQuery();
+
+                                if (flag > 0) 
+                                {
+                                    Products.Remove(product);
+
+                                    customListView.RefreshCustomListView();
+
+                                    MessageBox.Show("Выбранная запись была успено удалена!", "Ответ", MessageBoxButton.OK, MessageBoxImage.Information);
+                                }
+                            }
+                            catch (System.Data.SqlClient.SqlException)
+                            {
+                                MessageBox.Show("Произошла ошибка при отправке данных на сервер! \nКод ошибки: 3", "Произошла ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                                return;
+                            }
+                        }
+                    }
+                },
+               (obj) => Products.Count > 0));
             }
         }
 
