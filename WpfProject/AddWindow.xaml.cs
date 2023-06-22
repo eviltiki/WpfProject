@@ -26,7 +26,7 @@ namespace WpfProject
 
             this.Resources.Add("AppStartDate", mainWindow.AppStartDate);
 
-            dataPicker.DisplayDateStart = (DateTime)this.TryFindResource("AppStartDate");
+            datePicker.DisplayDateStart = (DateTime)this.TryFindResource("AppStartDate");
 
             if (WindowType == 0)
             {
@@ -46,6 +46,7 @@ namespace WpfProject
 
                 nameInput.Text = product.Name;
                 priceInput.Text = Convert.ToString(product.Price);
+                datePicker.Text = Convert.ToString(product.Date);
 
                 Binding binding = new Binding();
 
@@ -54,6 +55,16 @@ namespace WpfProject
                 addBtn.SetBinding(Button.CommandProperty, binding);
 
             }
+        }
+
+        private void clearBtn_Click(object sender, RoutedEventArgs e)
+        {
+            nameInput.Clear();
+            priceInput.Clear();
+
+            datePicker.SelectedDate = null;
+            datePicker.DisplayDate = DateTime.Now;
+
         }
     }
 }

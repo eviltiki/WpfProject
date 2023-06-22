@@ -40,7 +40,7 @@
         <Border Grid.Row="2" Padding="20">
             <StackPanel HorizontalAlignment="Left">
                 <TextBlock FontWeight="Bold" Margin="0 0 0 5">Дата старта продаж</TextBlock>
-                <DatePicker x:Name="dataPicker" DisplayDateEnd="{x:Static sys:DateTime.Now}"/>
+                <DatePicker x:Name="datePicker" DisplayDateEnd="{x:Static sys:DateTime.Now}"/>
             </StackPanel>
         </Border>
         <Border Padding="20 5 20 5" Grid.Row="3" BorderThickness="0" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -50,11 +50,12 @@
                         <MultiBinding Converter="{StaticResource cv}">
                             <Binding ElementName="nameInput" Path="Text" UpdateSourceTrigger="PropertyChanged"/>
                             <Binding ElementName="priceInput" Path="Text" UpdateSourceTrigger="PropertyChanged"/>
+                            <Binding ElementName="datePicker" Path="Text" UpdateSourceTrigger="PropertyChanged"/>
                         </MultiBinding>
                     </Button.CommandParameter>
                     Добавить
                 </Button>
-                <Button Style="{DynamicResource MainStyleButtons}" x:Name="clearBtn">Очистить</Button>
+                <Button Style="{DynamicResource MainStyleButtons}" x:Name="clearBtn" Click="clearBtn_Click">Очистить</Button>
                 <Button Style="{DynamicResource MainStyleButtons}" x:Name="cancelBtn" Margin="0 0 0 5" IsCancel="True">Отмена</Button>
             </WrapPanel>
         </Border>

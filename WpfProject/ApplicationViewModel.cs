@@ -22,6 +22,7 @@ namespace WpfProject
         public ObservableCollection<Product> Products { get; set; }
         private Product selectedProduct;
         private CustomListView customListView;
+        private MainWindow mainWindow;
         private string connectionString = @"Data Source=ARTHUR-PC\ARTHURSQL;
                                                             Initial Catalog=ShopDB;Integrated Security=True";
 
@@ -63,23 +64,70 @@ namespace WpfProject
         {
             get
             {
-                return addCommand; /*??*/
-                //    (addCommand = new RelayCommand(obj =>
-                //    {
-                //        var values = obj as Object[];
+                return addCommand ??
+                (addCommand = new RelayCommand(obj =>
+                {
+                    var values = obj as Object[];
 
-                //        if (values != null)
-                //        {
-                //            var name = (string)values[0];
-                //            var price = Convert.ToDouble(values[1]);
+                    if (values != null)
+                    {
 
-                //            Product product = new Product { Id = counter, Name = name, Price = price };
-                //            Products.Add(product);
-                //            SelectedProduct = product;
-                //            customListView.RefreshCustomListView();
-                //        }
+                        if (Convert.ToString(values[0]).Length == 0 || Convert.ToString(values[1]).Length == 0 
+                            || Convert.ToString(values[2]).Length == 0)
+                        {
+                            MessageBox.Show("Заполните все поля!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
 
-                //    }));
+                        var name = (string)values[0];
+                        var price = Convert.ToDouble(values[1]);
+                        var date = Convert.ToDateTime(values[2]);
+
+                        if (date < mainWindow.AppStartDate.Date || date > DateTime.Now.Date)
+                        {
+                            MessageBox.Show("Неверно задана дата!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
+
+                        string fdate = Convert.ToString(date);
+
+                        fdate = fdate.Substring(6, 4) + "-" + fdate.Substring(3, 2) + "-" + fdate.Substring(0, 2);
+
+                        using (SqlConnection connection = new SqlConnection(connectionString))
+                        {
+                            SqlCommand cmd = new SqlCommand($"EXEC prДобавлениеТовара '{name}', {price}, '{fdate}'", connection);
+
+                            connection.Open();
+                            try
+                            {
+                                SqlDataReader reader = cmd.ExecuteReader();
+
+                                if (reader.HasRows)
+                                {
+                                    while (reader.Read())
+                                    {
+                                        int id = Convert.ToInt32(reader["Код записи"]);
+
+                                        Product product = new Product { Id = id, Name = name, Price = price, Date = Convert.ToString(date).Substring(0,10) };
+
+                                        Products.Add(product);
+                                        SelectedProduct = product;
+
+                                        customListView.RefreshCustomListView();
+
+                                        MessageBox.Show("Товар был успешно создан!", "Ответ", MessageBoxButton.OK, MessageBoxImage.Information);
+                                    }
+                                }
+                            }
+                            catch (System.Data.SqlClient.SqlException)
+                            {
+                                MessageBox.Show("Произошла ошибка при отправке данных на сервер! \nКод ошибки: 1", "Произошла ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                                return;
+                            } 
+                        }
+                    }
+
+                }));
             }
         }
 
@@ -88,24 +136,64 @@ namespace WpfProject
         {
             get
             {
-                return editCommand; /*??*/
-                //    (editCommand = new RelayCommand(obj =>
-                //    {
-                //        var values = obj as Object[];
+                return editCommand ??
+                (editCommand = new RelayCommand(obj =>
+                {
+                    var values = obj as Object[];
 
-                //        if (values != null)
-                //        {
-                //            var name = (string)values[0];
-                //            var price = Convert.ToDouble(values[1]);
+                    if (values != null)
+                    {
+                        if (Convert.ToString(values[0]).Length == 0 || Convert.ToString(values[1]).Length == 0
+                            || Convert.ToString(values[2]).Length == 0)
+                        {
+                            MessageBox.Show("Заполните все поля!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
 
-                //            SelectedProduct.Name = name;
-                //            SelectedProduct.Price = price;
+                        var name = (string)values[0];
+                        var price = Convert.ToDouble(values[1]);
+                        var date = Convert.ToDateTime(values[2]);
 
-                //            customListView.RefreshCustomListView();
-                //        }
+                        if ((date != Convert.ToDateTime(SelectedProduct.Date).Date) && (date < mainWindow.AppStartDate.Date || date > DateTime.Now.Date))
+                        {
+                            MessageBox.Show("Неверно задана дата!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
 
-                //    },
-                //    (obj) => Products.Count > 0));
+                        string fdate = Convert.ToString(date);
+
+                        fdate = fdate.Substring(6, 4) + "-" + fdate.Substring(3, 2) + "-" + fdate.Substring(0, 2);
+
+                        using (SqlConnection connection = new SqlConnection(connectionString))
+                        {
+                            SqlCommand cmd = new SqlCommand($"EXEC prОбновлениеТовара {selectedProduct.Id}, '{name}', {price}, '{fdate}'", connection);
+
+                            connection.Open();
+                            try
+                            {
+                                int flag = cmd.ExecuteNonQuery();
+
+                                if (flag > 0)
+                                {
+                                    SelectedProduct.Name = name;
+                                    SelectedProduct.Price = price;
+                                    SelectedProduct.Date = Convert.ToString(date).Substring(0, 10);
+
+                                    customListView.RefreshCustomListView();
+
+                                    MessageBox.Show("Данные о товаре были успешно изменены!", "Ответ", MessageBoxButton.OK, MessageBoxImage.Information);
+                                }
+                            }
+                            catch (System.Data.SqlClient.SqlException)
+                            {
+                                MessageBox.Show("Произошла ошибка при отправке данных на сервер! \nКод ошибки: 1", "Произошла ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                                return;
+                            }
+                        }
+                    }
+
+                },
+                (obj) => Products.Count > 0));
             }
         }
 
@@ -138,8 +226,9 @@ namespace WpfProject
             }
         }
 
-        public ApplicationViewModel(CustomListView customListView)
+        public ApplicationViewModel(MainWindow mainWindow, CustomListView customListView)
         {
+            this.mainWindow = mainWindow;
 
             Products = new ObservableCollection<Product>();
 

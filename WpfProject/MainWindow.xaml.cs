@@ -30,7 +30,7 @@ namespace WpfProject
 
             AppStartDate = DateTime.Now;
 
-            DataContext = new ApplicationViewModel(customListView);
+            DataContext = new ApplicationViewModel(this, customListView);
 
 
         }
