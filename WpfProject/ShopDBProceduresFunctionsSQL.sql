@@ -1,44 +1,44 @@
 USE ShopDB
 GO
 
-DROP PROC prДобавлениеТовара
+DROP PROC prAddProduct
 GO
-DROP PROC prОбновлениеТовара
+DROP PROC prUpdateProduct
 GO
-DROP PROC prУдалениеТовара
+DROP PROC prDeleteProduct
 GO
 
-CREATE PROC prДобавлениеТовара
-  @Название VARCHAR(50)
-, @Цена MONEY
-, @Дата DATE
+CREATE PROC prAddProduct
+  @Name VARCHAR(50)
+, @Price MONEY
+, @Date DATE
 AS
 DECLARE @sql NVARCHAR(1000)
-SET @sql = N'INSERT INTO Товар(Название, Цена, Дата)
+SET @sql = N'INSERT INTO Product(Name, Price, Date)
                VALUES(@name, @price, @date)'
 
-EXEC sp_executesql @sql, N'@name VARCHAR(50), @price MONEY, @date DATE', @Название, @Цена, @Дата
-SELECT (ident_current('Товар')) AS 'Код записи'
+EXEC sp_executesql @sql, N'@name VARCHAR(50), @price MONEY, @date DATE', @Date, @Price, @Date
+SELECT (ident_current('Product')) AS 'Product Id'
 GO
 
-CREATE PROC prОбновлениеТовара
-  @Код INT
-, @Название VARCHAR(50)
-, @Цена MONEY
-, @Дата DATE
+CREATE PROC prUpdateProduct
+  @Id INT
+, @Name VARCHAR(50)
+, @Price MONEY
+, @Date DATE
 AS
 DECLARE @sql NVARCHAR(1000)
-SET @sql = N'UPDATE Товар
-               SET Название = @name, Цена = @price, Дата = @date
-               WHERE Код = @code'
+SET @sql = N'UPDATE Product
+               SET Name = @name, Price = @price, Date = @date
+               WHERE Id = @code'
 
 EXEC sp_executesql @sql, N'@code INT, @name VARCHAR(50), @price MONEY, @date DATE', 
-  @Код, @Название, @Цена, @Дата
+  @Id, @Name, @Price, @Date
 GO
 
-CREATE PROC prУдалениеТовара
-  @Код INT
+CREATE PROC prDeleteProduct
+  @Id INT
 AS
-DELETE Товар
-  WHERE Код = @Код
+DELETE Product
+  WHERE Id = @Id
 GO

@@ -7,23 +7,23 @@ GO
 USE ShopDB
 GO
 
-DROP TABLE Товар
+DROP TABLE Product
 GO
 
-CREATE TABLE Товар
-( Код INT IDENTITY PRIMARY KEY 
-, Название VARCHAR(50) NOT NULL
-, Цена MONEY NOT NULL CHECK(Цена > 0)
-, Дата DATE NOT NULL
+CREATE TABLE Product
+( Id INT IDENTITY PRIMARY KEY 
+, Name VARCHAR(50) NOT NULL
+, Price MONEY NOT NULL CHECK(Price > 0)
+, Date DATE NOT NULL
 )
 GO
 
-INSERT INTO Товары(Название, Цена, Дата)
+INSERT INTO Product(Name, Price, Date)
   VALUES('Телефон', 2700, '2023-05-25')
 GO
-INSERT INTO Товары(Название, Цена, Дата)
+INSERT INTO Product(Name, Price, Date)
   VALUES('Ноутбук', 2150, '2023-06-02')
 GO
-INSERT INTO Товары(Название, Цена, Дата)
+INSERT INTO Product(Name, Price, Date)
   VALUES('Калькулятор', 52, '2023-06-17')
 GO

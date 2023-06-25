@@ -33,7 +33,7 @@ namespace WpfProject
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Товар", connection);
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Product", connection);
 
                 connection.Open();
 
@@ -46,10 +46,10 @@ namespace WpfProject
 
                 while (reader.Read())
                 {
-                    id = Convert.ToInt32(reader["Код"]);
-                    productName = Convert.ToString(reader["Название"]);
-                    productPrice = Convert.ToDouble(reader["Цена"]);
-                    date = Convert.ToString(reader["Дата"]).Substring(0, 10);
+                    id = Convert.ToInt32(reader["Id"]);
+                    productName = Convert.ToString(reader["Name"]);
+                    productPrice = Convert.ToDouble(reader["Price"]);
+                    date = Convert.ToString(reader["Date"]).Substring(0, 10);
 
                     Products.Add(new Product { Id = id, Name = productName, Price = productPrice, Date = date });
                 }
@@ -97,7 +97,7 @@ namespace WpfProject
 
                         using (SqlConnection connection = new SqlConnection(connectionString))
                         {
-                            SqlCommand cmd = new SqlCommand($"EXEC prДобавлениеТовара '{name}', {price}, '{fdate}'", connection);
+                            SqlCommand cmd = new SqlCommand($"EXEC prAddProduct '{name}', {price}, '{fdate}'", connection);
 
                             connection.Open();
                             try
@@ -108,7 +108,7 @@ namespace WpfProject
                                 {
                                     while (reader.Read())
                                     {
-                                        int id = Convert.ToInt32(reader["Код записи"]);
+                                        int id = Convert.ToInt32(reader["Product Id"]);
 
                                         Product product = new Product { Id = id, Name = name, Price = price, Date = Convert.ToString(date).Substring(0,10) };
 
@@ -168,7 +168,7 @@ namespace WpfProject
 
                         using (SqlConnection connection = new SqlConnection(connectionString))
                         {
-                            SqlCommand cmd = new SqlCommand($"EXEC prОбновлениеТовара {selectedProduct.Id}, '{name}', {price}, '{fdate}'", connection);
+                            SqlCommand cmd = new SqlCommand($"EXEC prUpdateProduct {selectedProduct.Id}, '{name}', {price}, '{fdate}'", connection);
 
                             connection.Open();
                             try
@@ -213,7 +213,7 @@ namespace WpfProject
                     {
                         using (SqlConnection connection = new SqlConnection(connectionString))
                         {
-                            SqlCommand cmd = new SqlCommand($"EXEC prУдалениеТовара {product.Id}", connection);
+                            SqlCommand cmd = new SqlCommand($"EXEC prDeleteProduct {product.Id}", connection);
 
                             connection.Open();
                             try
@@ -270,11 +270,6 @@ namespace WpfProject
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
 
         }
-
-        //public AddProductToDb()
-        //{ 
-
-        //}
 
     }
 }
