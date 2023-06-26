@@ -14,7 +14,7 @@ namespace WpfProject
         private int id;
         private string name;
         private double price;
-        private string date;
+        private DateTime date;
 
         public int Id
         {
@@ -46,7 +46,7 @@ namespace WpfProject
             }
         }
 
-        public string Date
+        public DateTime Date
         {
             get { return date; }
             set

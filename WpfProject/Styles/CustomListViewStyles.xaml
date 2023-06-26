@@ -54,7 +54,7 @@
                             <TextBlock Text="{Binding Path=Price}"/>
                         </Border>
                         <Border Grid.Column="3" >
-                            <TextBlock Text="{Binding Path=Date}"/>
+                            <TextBlock Text="{Binding Date, StringFormat={}{0:MM/dd/yyyy}}"/>
                         </Border>
                     </Grid>
                 </DataTemplate>

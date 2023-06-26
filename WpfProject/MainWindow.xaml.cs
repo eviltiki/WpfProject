@@ -31,8 +31,6 @@ namespace WpfProject
             AppStartDate = DateTime.Now;
 
             DataContext = new ApplicationViewModel(this, customListView);
-
-
         }
 
         private void addBtn_Click(object sender, RoutedEventArgs e)

@@ -17,7 +17,7 @@ DECLARE @sql NVARCHAR(1000)
 SET @sql = N'INSERT INTO Product(Name, Price, Date)
                VALUES(@name, @price, @date)'
 
-EXEC sp_executesql @sql, N'@name VARCHAR(50), @price MONEY, @date DATE', @Date, @Price, @Date
+EXEC sp_executesql @sql, N'@name VARCHAR(50), @price MONEY, @date DATE', @Name, @Price, @Date
 SELECT (ident_current('Product')) AS 'Product Id'
 GO
 

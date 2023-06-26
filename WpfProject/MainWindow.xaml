@@ -32,8 +32,10 @@
                     CommandParameter="{Binding SelectedProduct}"/>
             </WrapPanel>
         </Border>
-        <local:CustomListView x:Name="customListView" ItemsSource="{Binding Products}" 
+        <ScrollViewer x:Name="SV" Grid.Row="1">
+            <local:CustomListView x:Name="customListView" ItemsSource="{Binding Products}" 
                               SelectedItem="{Binding SelectedProduct}" AlternativeBackground="LightGray" Grid.ColumnSpan="2" Margin="0,0,0,128" Grid.Row="1">
-        </local:CustomListView>
+            </local:CustomListView>
+        </ScrollViewer>
     </Grid>
 </Window>

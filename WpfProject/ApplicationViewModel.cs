@@ -42,14 +42,14 @@ namespace WpfProject
                 int id;
                 string productName;
                 double productPrice;
-                string date;
+                DateTime date;
 
                 while (reader.Read())
                 {
                     id = Convert.ToInt32(reader["Id"]);
                     productName = Convert.ToString(reader["Name"]);
                     productPrice = Convert.ToDouble(reader["Price"]);
-                    date = Convert.ToString(reader["Date"]).Substring(0, 10);
+                    date = Convert.ToDateTime(Convert.ToString(reader["Date"]).Substring(0, 10));
 
                     Products.Add(new Product { Id = id, Name = productName, Price = productPrice, Date = date });
                 }
@@ -110,7 +110,7 @@ namespace WpfProject
                                     {
                                         int id = Convert.ToInt32(reader["Product Id"]);
 
-                                        Product product = new Product { Id = id, Name = name, Price = price, Date = Convert.ToString(date).Substring(0,10) };
+                                        Product product = new Product { Id = id, Name = name, Price = price, Date = Convert.ToDateTime(Convert.ToString(date).Substring(0,10)) };
 
                                         Products.Add(product);
                                         SelectedProduct = product;
@@ -179,7 +179,7 @@ namespace WpfProject
                                 {
                                     SelectedProduct.Name = name;
                                     SelectedProduct.Price = price;
-                                    SelectedProduct.Date = Convert.ToString(date).Substring(0, 10);
+                                    SelectedProduct.Date = Convert.ToDateTime(Convert.ToString(date).Substring(0, 10));
 
                                     customListView.RefreshCustomListView();
 
