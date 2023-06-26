@@ -42,14 +42,14 @@ namespace WpfProject
                 int id;
                 string productName;
                 double productPrice;
-                DateTime date;
+                DateTimeOffset date;
 
                 while (reader.Read())
                 {
                     id = Convert.ToInt32(reader["Id"]);
                     productName = Convert.ToString(reader["Name"]);
                     productPrice = Convert.ToDouble(reader["Price"]);
-                    date = Convert.ToDateTime(Convert.ToString(reader["Date"]).Substring(0, 10));
+                    date = Convert.ToDateTime(Convert.ToString(reader["Date"]));
 
                     Products.Add(new Product { Id = id, Name = productName, Price = productPrice, Date = date });
                 }
@@ -83,21 +83,17 @@ namespace WpfProject
 
                         var name = (string)values[0];
                         var price = Convert.ToDouble(values[1]);
-                        var date = Convert.ToDateTime(values[2]);
+                        var date = Convert.ToDateTime(values[2]) + new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
 
-                        if (date < mainWindow.AppStartDate.Date || date > DateTime.Now.Date)
+                        if (date < mainWindow.AppStartDate || date > DateTime.Now)
                         {
                             MessageBox.Show("Неверно задана дата!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
                             return;
                         }
 
-                        string fdate = Convert.ToString(date);
-
-                        fdate = fdate.Substring(6, 4) + "-" + fdate.Substring(3, 2) + "-" + fdate.Substring(0, 2);
-
                         using (SqlConnection connection = new SqlConnection(connectionString))
                         {
-                            SqlCommand cmd = new SqlCommand($"EXEC prAddProduct '{name}', {price}, '{fdate}'", connection);
+                            SqlCommand cmd = new SqlCommand($"EXEC prAddProduct '{name}', {price}, '{date}'", connection);
 
                             connection.Open();
                             try
@@ -110,7 +106,7 @@ namespace WpfProject
                                     {
                                         int id = Convert.ToInt32(reader["Product Id"]);
 
-                                        Product product = new Product { Id = id, Name = name, Price = price, Date = Convert.ToDateTime(Convert.ToString(date).Substring(0,10)) };
+                                        Product product = new Product { Id = id, Name = name, Price = price, Date = date };
 
                                         Products.Add(product);
                                         SelectedProduct = product;
@@ -154,21 +150,18 @@ namespace WpfProject
 
                         var name = (string)values[0];
                         var price = Convert.ToDouble(values[1]);
-                        var date = Convert.ToDateTime(values[2]);
+                        var date = Convert.ToDateTime(values[2]) + new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
 
-                        if ((date != Convert.ToDateTime(SelectedProduct.Date).Date) && (date < mainWindow.AppStartDate.Date || date > DateTime.Now.Date))
+
+                        if ((date.Date != SelectedProduct.Date.Date) && (date < mainWindow.AppStartDate || date > DateTime.Now))
                         {
                             MessageBox.Show("Неверно задана дата!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
                             return;
                         }
 
-                        string fdate = Convert.ToString(date);
-
-                        fdate = fdate.Substring(6, 4) + "-" + fdate.Substring(3, 2) + "-" + fdate.Substring(0, 2);
-
                         using (SqlConnection connection = new SqlConnection(connectionString))
                         {
-                            SqlCommand cmd = new SqlCommand($"EXEC prUpdateProduct {selectedProduct.Id}, '{name}', {price}, '{fdate}'", connection);
+                            SqlCommand cmd = new SqlCommand($"EXEC prUpdateProduct {selectedProduct.Id}, '{name}', {price}, '{date}'", connection);
 
                             connection.Open();
                             try
@@ -179,7 +172,7 @@ namespace WpfProject
                                 {
                                     SelectedProduct.Name = name;
                                     SelectedProduct.Price = price;
-                                    SelectedProduct.Date = Convert.ToDateTime(Convert.ToString(date).Substring(0, 10));
+                                    SelectedProduct.Date = date;
 
                                     customListView.RefreshCustomListView();
 
