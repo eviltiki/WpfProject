@@ -1,11 +1,25 @@
 USE ShopDB
 GO
-
+ 
+DROP PROC prGetTrackerTable
+GO
+DROP TRIGGER trgProductIU
+GO
 DROP PROC prAddProduct
 GO
 DROP PROC prUpdateProduct
 GO
 DROP PROC prDeleteProduct
+GO
+DROP TABLE UpdateTrackerTable
+GO
+
+CREATE TABLE UpdateTrackerTable
+( Id INT
+, Name VARCHAR(50) 
+, Price MONEY
+, Date DATETIME 
+)
 GO
 
 CREATE PROC prAddProduct
@@ -41,4 +55,21 @@ CREATE PROC prDeleteProduct
 AS
 DELETE Product
   WHERE Id = @Id
+GO
+
+CREATE TRIGGER trgProductIU ON Product
+  AFTER INSERT, UPDATE
+AS
+  INSERT INTO UpdateTrackerTable 
+    SELECT * FROM INSERTED
+GO
+
+CREATE PROC prGetTrackerTable
+  @Date DATETIME
+AS
+DECLARE @sql NVARCHAR(1000)
+SET @sql = N'SELECT * FROM UpdateTrackerTable WHERE Date >= @appStartTime'
+
+EXEC sp_executesql @sql, N'@appStartTime DATETIME', @Date 
+DELETE FROM UpdateTrackerTable
 GO
