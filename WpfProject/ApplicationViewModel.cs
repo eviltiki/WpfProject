@@ -119,7 +119,7 @@ namespace WpfProject
                             }
                             catch (System.Data.SqlClient.SqlException)
                             {
-                                MessageBox.Show("Произошла ошибка при отправке данных на сервер! \nКод ошибки: 1", "Произошла ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                                MessageBox.Show("Произошла ошибка при отправке данных на сервер! \nКод ошибки: 1\n Ошибка:\n{e.Message}", "Произошла ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                                 return;
                             } 
                         }
@@ -181,7 +181,7 @@ namespace WpfProject
                             }
                             catch (System.Data.SqlClient.SqlException)
                             {
-                                MessageBox.Show("Произошла ошибка при отправке данных на сервер! \nКод ошибки: 1", "Произошла ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                                MessageBox.Show("Произошла ошибка при отправке данных на сервер! \nКод ошибки: 2\n Ошибка:\n{e.Message}", "Произошла ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                                 return;
                             }
                         }
