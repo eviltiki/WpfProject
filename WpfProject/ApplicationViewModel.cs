@@ -21,19 +21,19 @@ namespace WpfProject
 {
     public class ApplicationViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<Product> Products { get; set; }
-        private Product selectedProduct;
-        private CustomListView customListView;
+        public ObservableCollection<Product> Products { get; set; } // создаем коллекцию товаров.
+        private Product selectedProduct; // выбранный объект.
+        private CustomListView customListView; 
         private MainWindow mainWindow;
         private string connectionString = @"Data Source=ARTHUR-PC\ARTHURSQL;
                                                             Initial Catalog=ShopDB;Integrated Security=True";
 
-        public void LoadDataIntoList()
+        public void LoadDataIntoList() // загружаем данные в наш кастомный список.
         {
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Product", connection);
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Product", connection); 
 
                 connection.Open();
 
@@ -51,17 +51,17 @@ namespace WpfProject
                     productPrice = Convert.ToDouble(reader["Price"]);
                     date = Convert.ToDateTime(Convert.ToString(reader["Date"]));
 
-                    Products.Add(new Product { Id = id, Name = productName, Price = productPrice, Date = date });
+                    Products.Add(new Product { Id = id, Name = productName, Price = productPrice, Date = date }); // добавляем в коллекцию Products объекты базы данных.
                 }
             }
         }
 
-        public int GetIndextFromList(Product product)
+        public int GetIndextFromList(Product product) // возвращает номер товара в списке.
         {
             return Products.IndexOf(product);
         }
 
-        private RelayCommand addCommand;
+        private RelayCommand addCommand; // команда добавления объекта в список и бд.
         public RelayCommand AddCommand
         {
             get
@@ -129,7 +129,7 @@ namespace WpfProject
             }
         }
 
-        private RelayCommand editCommand;
+        private RelayCommand editCommand; // команда изменения объекта списка и бд.
         public RelayCommand EditCommand
         {
             get
@@ -192,8 +192,8 @@ namespace WpfProject
             }
         }
 
-        private RelayCommand removeCommand;
-        public RelayCommand RemoveCommand
+        private RelayCommand removeCommand; 
+        public RelayCommand RemoveCommand // команда удаления объекта из списка и бд.
         {
             get
             {
@@ -217,7 +217,7 @@ namespace WpfProject
                                 {
                                     Products.Remove(product);
 
-                                    customListView.RefreshCustomListView();
+                                    customListView.RefreshCustomListView(); // обновляем отображение списка.
 
                                     MessageBox.Show("Выбранная запись была успено удалена!", "Ответ", MessageBoxButton.OK, MessageBoxImage.Information);
                                 }
@@ -240,7 +240,7 @@ namespace WpfProject
             set
             {
                 selectedProduct = value;
-                OnPropertyChanged("SelectedProduct");
+                OnPropertyChanged("SelectedProduct"); // сообщаем о том, что одно из свойств было изменено, чтобы перерисовать список.
             }
         }
 
@@ -248,11 +248,11 @@ namespace WpfProject
         {
             this.mainWindow = mainWindow;
 
-            Products = new ObservableCollection<Product>();
+            Products = new ObservableCollection<Product>(); // инициализируем нашу коллекцию.
 
-            this.customListView = customListView;
+            this.customListView = customListView; // кастомный список
 
-            LoadDataIntoList();
+            LoadDataIntoList(); // загружаем данные из бд в наш список.
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

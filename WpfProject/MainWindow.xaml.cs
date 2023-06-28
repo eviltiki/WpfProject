@@ -22,23 +22,23 @@ namespace WpfProject
     public partial class MainWindow : Window
     {
 
-        public DateTime AppStartDate { get; set; }
+        public DateTime AppStartDate { get; set; } // время старта работы приложения
 
         public MainWindow()
         {
             InitializeComponent();
 
-            AppStartDate = DateTime.Now;
+            AppStartDate = DateTime.Now; // инициализируем переменную
 
-            DataContext = new ApplicationViewModel(this, customListView);
+            DataContext = new ApplicationViewModel(this, customListView); // заносим в DataContext объект класса ApplicationViewModel - класс-посредник между моделями и представлениями.
         }
 
         private void addBtn_Click(object sender, RoutedEventArgs e)
         {
-            AddWindow addWindow = new AddWindow(this, 0);
-            addWindow.DataContext = DataContext;
+            AddWindow addWindow = new AddWindow(this, 0); // создаем окно добавления новой записи в бд.
+            addWindow.DataContext = DataContext; // Заносим в контекст окна контекст данных класса MainWindow.
 
-            addWindow.ShowDialog();
+            addWindow.ShowDialog(); // отображаем окно
 
 
 
@@ -52,7 +52,7 @@ namespace WpfProject
                 return;
             }
 
-            AddWindow addWindow = new AddWindow(this, 1, customListView.SelectedItem as Product);
+            AddWindow addWindow = new AddWindow(this, 1, customListView.SelectedItem as Product); 
             addWindow.DataContext = DataContext;
 
             addWindow.ShowDialog();
