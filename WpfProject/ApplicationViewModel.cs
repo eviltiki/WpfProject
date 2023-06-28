@@ -222,9 +222,9 @@ namespace WpfProject
                                     MessageBox.Show("Выбранная запись была успено удалена!", "Ответ", MessageBoxButton.OK, MessageBoxImage.Information);
                                 }
                             }
-                            catch (System.Data.SqlClient.SqlException)
+                            catch (System.Data.SqlClient.SqlException e)
                             {
-                                MessageBox.Show("Произошла ошибка при отправке данных на сервер! \nКод ошибки: 3", "Произошла ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                                MessageBox.Show($"Произошла ошибка при отправке данных на сервер! \nКод ошибки: 3.\n Ошибка:\n{e.Message}", "Произошла ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                                 return;
                             }
                         }
