@@ -10,6 +10,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.Intrinsics.Arm;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -75,25 +76,40 @@ namespace WpfProject
                     {
 
                         if (Convert.ToString(values[0]).Length == 0 || Convert.ToString(values[1]).Length == 0 
-                            || Convert.ToString(values[2]).Length == 0)
+                            || Convert.ToString(values[2]).Length == 0 || Convert.ToString(values[3]).Length ==0 )
                         {
                             MessageBox.Show("Заполните все поля!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
                             return;
                         }
 
-                        var name = (string)values[0];
-                        var price = Convert.ToDouble(values[1]);
-                        var date = Convert.ToDateTime(values[2]) + new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+                        Regex timePattern = new Regex("^(((0[0-9])|(1[0-9])|(2[0-3])):[0-5][0-9]:[0-5][0-9])$");
 
-                        if (date < mainWindow.AppStartDate || date > DateTime.Now)
+                        string time = Convert.ToString(values[3]);
+
+                        if (!timePattern.IsMatch(time))
+                        {
+                            MessageBox.Show("Неверно задано время!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
+
+                        var name = (string)values[0];
+                        var price = Convert.ToDouble(values[1]); 
+                        var date = Convert.ToDateTime(values[2]) + new TimeSpan(Convert.ToInt32(time.Substring(0, 2)), Convert.ToInt32(time.Substring(3, 2)), 
+                            Convert.ToInt32(time.Substring(6, 2)));
+
+                        if (date < DateTime.Now)
                         {
                             MessageBox.Show("Неверно задана дата!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
                             return;
                         }
 
+                        string sDate = date.ToString();
+
+                        sDate = sDate.Substring(6, 4) + sDate.Substring(3, 2) + sDate.Substring(0, 2) + ' ' + sDate.Substring(11);
+
                         using (SqlConnection connection = new SqlConnection(connectionString))
                         {
-                            SqlCommand cmd = new SqlCommand($"EXEC prAddProduct '{name}', {price}, '{date}'", connection);
+                            SqlCommand cmd = new SqlCommand($"EXEC prAddProduct '{name}', {price}, '{sDate}'", connection);
 
                             connection.Open();
                             try
@@ -148,20 +164,34 @@ namespace WpfProject
                             return;
                         }
 
+                        Regex timePattern = new Regex("^(((0[0-9])|(1[0-9])|(2[0-3])):[0-5][0-9]:[0-5][0-9])$");
+
+                        string time = Convert.ToString(values[3]);
+
+                        if (!timePattern.IsMatch(time))
+                        {
+                            MessageBox.Show("Неверно задано время!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
+
                         var name = (string)values[0];
                         var price = Convert.ToDouble(values[1]);
-                        var date = Convert.ToDateTime(values[2]) + new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+                        var date = Convert.ToDateTime(values[2]) + new TimeSpan(Convert.ToInt32(time.Substring(0, 2)), Convert.ToInt32(time.Substring(3, 2)),
+                            Convert.ToInt32(time.Substring(6, 2)));
 
-
-                        if ((date.Date != SelectedProduct.Date.Date) && (date < mainWindow.AppStartDate || date > DateTime.Now))
+                        if ((date != SelectedProduct.Date) && (date < DateTime.Now))
                         {
                             MessageBox.Show("Неверно задана дата!", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
                             return;
                         }
 
+                        string sDate = date.ToString();
+
+                        sDate = sDate.Substring(6, 4) + sDate.Substring(3, 2) + sDate.Substring(0, 2) + ' ' + sDate.Substring(11);
+
                         using (SqlConnection connection = new SqlConnection(connectionString))
                         {
-                            SqlCommand cmd = new SqlCommand($"EXEC prUpdateProduct {selectedProduct.Id}, '{name}', {price}, '{date}'", connection);
+                            SqlCommand cmd = new SqlCommand($"EXEC prUpdateProduct {selectedProduct.Id}, '{name}', {price}, '{sDate}'", connection);
 
                             connection.Open();
                             try

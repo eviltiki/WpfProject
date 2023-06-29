@@ -24,10 +24,6 @@ namespace WpfProject
         {
             InitializeComponent();
 
-            this.Resources.Add("AppStartDate", mainWindow.AppStartDate);
-
-            datePicker.DisplayDateStart = (DateTime)this.TryFindResource("AppStartDate");
-
             if (WindowType == 0)
             {
                 this.Title = "Добавление товара";
@@ -47,6 +43,7 @@ namespace WpfProject
                 nameInput.Text = product.Name;
                 priceInput.Text = Convert.ToString(product.Price);
                 datePicker.Text = Convert.ToString(product.Date);
+                timePicker.Text = Convert.ToString(product.Date.TimeOfDay);
 
                 Binding binding = new Binding();
 
@@ -55,6 +52,7 @@ namespace WpfProject
                 addBtn.SetBinding(Button.CommandProperty, binding);
 
             }
+
         }
 
         private void clearBtn_Click(object sender, RoutedEventArgs e)
@@ -66,5 +64,6 @@ namespace WpfProject
             datePicker.DisplayDate = DateTime.Now;
 
         }
+
     }
 }

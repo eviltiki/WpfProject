@@ -8,7 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="devexpress.wpf.charts" Version="22.2.6" />
+    <PackageReference Include="devexpress.wpf.core" Version="22.2.6" />
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Xceed.Wpf.Samples.SampleData">
+      <HintPath>C:\Users\Arthur\Downloads\wpftoolkit-master\ExtendedWPFToolkitSolution\Libs\Xceed.Wpf.Samples.SampleData.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
