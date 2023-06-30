@@ -24,6 +24,7 @@ CREATE TABLE Product
 , Name VARCHAR(50) NOT NULL
 , Price MONEY NOT NULL CHECK(Price > 0)
 , Date DATETIME NOT NULL
+, OnSale tinyint DEFAULT 0
 )
 GO
 
@@ -39,12 +40,13 @@ CREATE SERVICE SBInitiatorService
 ON QUEUE SBInitiatorQueue
 GO
 
-INSERT INTO Product(Name, Price, Date)
-  VALUES('Телефон', 2700, '25-05-2023 19:40')
+INSERT INTO Product(Name, Price, Date, OnSale)
+  VALUES('Телефон', 2700, '25-05-2023 19:40', 2)
 GO
-INSERT INTO Product(Name, Price, Date)
-  VALUES('Ноутбук', 2700, '09-06-2023 17:20')
+INSERT INTO Product(Name, Price, Date, OnSale)
+  VALUES('Ноутбук', 2700, '09-06-2023 17:20', 2)
 GO
-INSERT INTO Product(Name, Price, Date)
-  VALUES('Калькулятор', 2700, '25-06-2023 14:17')
+INSERT INTO Product(Name, Price, Date, OnSale)
+  VALUES('Калькулятор', 2700, '25-06-2023 14:17', 2)
 GO
+
