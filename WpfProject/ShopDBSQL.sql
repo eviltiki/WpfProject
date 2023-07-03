@@ -49,4 +49,3 @@ GO
 INSERT INTO Product(Name, Price, Date, OnSale)
   VALUES('Калькулятор', 2700, '25-06-2023 14:17', 2)
 GO
-
