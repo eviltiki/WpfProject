@@ -41,13 +41,23 @@ CREATE PROC prUpdateProduct
 , @Name VARCHAR(50)
 , @Price MONEY
 , @Date DATETIME
+, @flag INT
 AS
 DECLARE @sql NVARCHAR(1000)
 SET @sql = N'UPDATE Product
                SET Name = @name, Price = @price, Date = @date
                WHERE Id = @code'
+IF @flag = 2 
+BEGIN
+  DECLARE @sql2 NVARCHAR(1000) = 
+    N'UPDATE Product
+        SET OnSale = 0
+        WHERE Id = @code'
 
-EXEC sp_executesql @sql, N'@code INT, @name VARCHAR(50), @price MONEY, @date DATETIME', 
+  EXEC sp_executesql @sql2, N'@code INT', @Id
+END
+
+EXEC sp_executesql @sql, N'@code INT, @name VARCHAR(50), @price MONEY, @date DATETIME',
   @Id, @Name, @Price, @Date
 GO
 

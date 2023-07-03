@@ -189,9 +189,24 @@ namespace WpfProject
 
                         sDate = sDate.Substring(6, 4) + sDate.Substring(3, 2) + sDate.Substring(0, 2) + ' ' + sDate.Substring(11);
 
+                        int resetFlag = 0;
+
+                        if (date != SelectedProduct.Date)
+                        {
+                            resetFlag = 2;
+                        }
+
                         using (SqlConnection connection = new SqlConnection(connectionString))
                         {
-                            SqlCommand cmd = new SqlCommand($"EXEC prUpdateProduct {selectedProduct.Id}, '{name}', {price}, '{sDate}'", connection);
+
+                            string cmdStr = $"EXEC prUpdateProduct {selectedProduct.Id}, '{name}', {price}, '{sDate}'";
+
+                            if (resetFlag == 2)
+                            {
+                                cmdStr += ", 2";
+                            }
+
+                            SqlCommand cmd = new SqlCommand(cmdStr, connection);
 
                             connection.Open();
                             try
