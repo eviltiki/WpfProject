@@ -41,7 +41,7 @@ CREATE PROC prUpdateProduct
 , @Name VARCHAR(50)
 , @Price MONEY
 , @Date DATETIME
-, @flag INT
+, @flag INT = 0
 AS
 DECLARE @sql NVARCHAR(1000)
 SET @sql = N'UPDATE Product
