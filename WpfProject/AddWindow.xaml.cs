@@ -53,7 +53,7 @@ namespace WpfProject
 
             datePicker.SelectedDate = null;
             datePicker.DisplayDate = DateTime.Now;
-
+            timePicker.Text = "";
         }
 
     }
