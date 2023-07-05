@@ -69,7 +69,7 @@ namespace WpfProject
                             return;
                         }
 
-                        Regex timePattern = new Regex("^(((0[0-9])|(1[0-9])|(2[0-3])):[0-5][0-9]:[0-5][0-9])$");
+                        Regex timePattern = new Regex("^(((0?[0-9])|(1[0-9])|(2[0-3])):[0-5][0-9]:[0-5][0-9])$");
 
                         string time = Convert.ToString(values[3]);
 
@@ -80,7 +80,8 @@ namespace WpfProject
                         }
 
                         var name = (string)values[0];
-                        var price = Convert.ToDouble(values[1]); 
+                        var price = Convert.ToDouble(values[1]);
+
                         var date = Convert.ToDateTime(values[2]) + new TimeSpan(Convert.ToInt32(time.Substring(0, 2)), Convert.ToInt32(time.Substring(3, 2)), 
                             Convert.ToInt32(time.Substring(6, 2)));
 
@@ -151,7 +152,7 @@ namespace WpfProject
                             return;
                         }
 
-                        Regex timePattern = new Regex("^(((0[0-9])|(1[0-9])|(2[0-3])):[0-5][0-9]:[0-5][0-9])$");
+                        Regex timePattern = new Regex("^(((0?[0-9])|(1[0-9])|(2[0-3])):[0-5][0-9]:[0-5][0-9])$");
 
                         string time = Convert.ToString(values[3]);
 
@@ -163,6 +164,7 @@ namespace WpfProject
 
                         var name = (string)values[0];
                         var price = Convert.ToDouble(values[1]);
+
                         var date = Convert.ToDateTime(values[2]) + new TimeSpan(Convert.ToInt32(time.Substring(0, 2)), Convert.ToInt32(time.Substring(3, 2)),
                             Convert.ToInt32(time.Substring(6, 2)));
 

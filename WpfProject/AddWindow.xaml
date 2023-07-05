@@ -42,7 +42,7 @@
                 <TextBlock FontWeight="Bold" Margin="0 0 0 5">Дата и время старта продаж</TextBlock>
                 <StackPanel x:Name="dateTimePickerPanel" Orientation="Horizontal"> 
                     <DatePicker x:Name="datePicker" FontSize="12" DisplayDateStart="{x:Static sys:DateTime.Now}" VerticalAlignment="Center" Padding="4" Margin="0 0 10 0"/>
-                    <xctk:DateTimePicker x:Name="timePicker" Height="30" Width="100" Format="LongTime" ShowDropDownButton="False" FontSize="12" Padding="2"/>
+                    <xctk:DateTimePicker x:Name="timePicker" Height="30" Width="100" Format="Custom" FormatString="HH:mm:ss" ShowDropDownButton="False" FontSize="12" Padding="2"/>
                 </StackPanel>
             </StackPanel>
         </Border>
